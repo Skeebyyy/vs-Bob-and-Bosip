@@ -16,11 +16,7 @@ import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import lime.utils.Assets;
 import flixel.math.FlxPoint;
-import LoadingState.LoadingsState;
-#if windows
-import Sys;
-import sys.FileSystem;
-#end
+import openfl.utils.Assets as OpenFlAssets;
 import openfl.Lib;
 
 #if windows
@@ -153,14 +149,6 @@ class FreeplayState extends MusicBeatState
 		}
 		canDoShit = false;
 		
-		
-		/*var line:FlxSprite = new FlxSprite().loadGraphic(Paths.image('mainmenu/Black line'));
-		line.scrollFactor.set();
-		line.updateHitbox();
-		line.antialiasing = true;
-		add(line);*/
-
-		
 
 		grpSongs = new FlxTypedGroup<MenuItem>();
 		add(grpSongs);
@@ -287,21 +275,6 @@ class FreeplayState extends MusicBeatState
 				lerpArrow = true;
 			}
 		});
-		/*FlxTween.tween(character, {x: targetX}, 0.6, {
-			ease: FlxEase.quadIn,
-			startDelay: 0.2,
-			onComplete: function(twn:FlxTween) {
-				if (cjChance == 25) {
-					character.playAnim('haha', true);
-					new FlxTimer().start(0.7, function(tmr:FlxTimer)
-					{
-						character.playAnim('idle', true, false, 10);
-					});
-					FlxG.sound.play(Paths.sound('cjhaha', 'shared'), 0.4);
-				}
-				canDoShit = true;
-			}
-		});*/
 		FlxTween.tween(freeplayLogo, {x: -20}, 0.6, {
 			ease: FlxEase.quadIn,
 			startDelay: 0.2,
@@ -316,15 +289,6 @@ class FreeplayState extends MusicBeatState
 				}
 			});
 		}
-		/*new FlxTimer().start(0.61, function(tmr:FlxTimer)
-		{
-			for (i in grpSongs) {
-				i.visible = true;
-			}
-			for (i in iconArray) {
-				i.visible = true;
-			}
-		});*/
 		
 		changeSelection();
 		changeDiff();
@@ -342,34 +306,28 @@ class FreeplayState extends MusicBeatState
 		// JUST DOIN THIS SHIT FOR TESTING!!!
 		/* 
 			var md:String = Markdown.markdownToHtml(Assets.getText('CHANGELOG.md'));
-
 			var texFel:TextField = new TextField();
 			texFel.width = FlxG.width;
 			texFel.height = FlxG.height;
 			// texFel.
 			texFel.htmlText = md;
-
 			FlxG.stage.addChild(texFel);
-
 			// scoreText.textField.htmlText = md;
-
 			trace(md);
 		 */
 		new FlxTimer().start(0.5, function(tmr:FlxTimer)
 		{
 			if (MainMenuState.firsttimeSplitEX) {
-				if (!FlxG.save.data.beatSplitEX) {
-					achievementArray.push('unlocked 8-bit split in the sound test!');
-					FlxG.save.data.beatSplitEX = true;
-				}
-				if (!FlxG.save.data.beatSplitEX2) {
-					achievementArray.push('unlocked oblique fracture in the desktop!');
-					FlxG.save.data.beatSplitEX2 = true;
-				}
+				achievementArray.push('unlocked 8-bit split in the sound test!');
 				MainMenuState.firsttimeSplitEX = false;
 			}
 
 		});
+
+		#if mobileC
+		addVirtualPad(FULL, A_B);
+		#end
+
 		super.create();
 	}
 
@@ -546,16 +504,14 @@ class FreeplayState extends MusicBeatState
 		trace(songLowercase);
 
 		var poop:String = Highscore.formatSong(songs[curSelected].songName.toLowerCase(), curDifficulty);
-		
+
+		trace(poop);
 		if (curDifficulty == 3) {
 			PlayState.effectSONG = Song.loadFromJson('effects-ex', songs[curSelected].songName.toLowerCase());
 		}
-		var woofEXthing:String = '';
-		if (curDifficulty == 3)
-			woofEXthing = '-ex';
 		switch (songs[curSelected].songName.toLowerCase()) {
 			case 'yap squad':
-				PlayState.dad2SONG = Song.loadFromJson('woof' + woofEXthing, songs[curSelected].songName.toLowerCase());
+				PlayState.dad2SONG = Song.loadFromJson('woof', songs[curSelected].songName.toLowerCase());
 		}
 		PlayState.playCutscene = false;
 		PlayState.SONG = Song.loadFromJson(poop, songs[curSelected].songName.toLowerCase());
@@ -569,10 +525,7 @@ class FreeplayState extends MusicBeatState
 		bpm = 0;
 		new FlxTimer().start(2, function(tmr:FlxTimer)
 		{
-			openSubState(new LoadingsState());
-			FlxTransitionableState.skipNextTransIn = true;
-			var toSwitchToState = new PlayState();
-			LoadingState.loadAndSwitchState(toSwitchToState, true,true);
+			LoadingState.loadAndSwitchState(new PlayState());
 		});
 	}
 	function leaveTransition() {
@@ -855,7 +808,7 @@ class FreeplayState extends MusicBeatState
 				FlxG.sound.playMusic(Paths.instEX(songs[curSelected].songName), 0);
 				isEX = true;
 				curSong = songs[curSelected].songName;
-				var daJson = Song.loadFromJson(songs[curSelected].songName.toLowerCase() + '-ex', songs[curSelected].songName.toLowerCase());
+				var daJson = Song.loadFromJson(songs[curSelected].songName.toLowerCase() + '-hard', songs[curSelected].songName.toLowerCase());
 				bpm = daJson.bpm;
 				Conductor.changeBPM(daJson.bpm);
 			}
@@ -925,8 +878,6 @@ class FreeplayState extends MusicBeatState
 								songText.anotherFuckingXOffset = 15;
 							case 'split':
 								songText.anotherFuckingXOffset = 2;
-							//case 'oblique fracture':
-								//songText.anotherFuckingXOffset = 110;
 							case 'yap squad':
 								songText.anotherFuckingXOffset = 70;
 							case 'intertwined':
@@ -935,8 +886,6 @@ class FreeplayState extends MusicBeatState
 								songText.anotherFuckingXOffset = 110;
 							case 'conscience':
 								songText.anotherFuckingXOffset = 80;
-							case 'gameover':
-								songText.anotherFuckingXOffset = 70;
 						}
 		
 						songText.loadGraphic(Paths.image('freeplay/text/' + songs[i].songName.toLowerCase() + 'Title'));
@@ -955,8 +904,6 @@ class FreeplayState extends MusicBeatState
 								songText.anotherFuckingXOffset = 15;
 							case 'split':
 								songText.anotherFuckingXOffset = 2;
-							//case 'oblique fracture':
-								//songText.anotherFuckingXOffset = 110;
 							case 'yap squad':
 								songText.anotherFuckingXOffset = 70;
 							case 'intertwined':
@@ -965,8 +912,6 @@ class FreeplayState extends MusicBeatState
 								songText.anotherFuckingXOffset = 110;
 							case 'conscience':
 								songText.anotherFuckingXOffset = 80;
-							case 'gameover':
-								songText.anotherFuckingXOffset = 70;
 						}
 		
 						songText.loadGraphic(Paths.image('freeplay/text/' + songs[i].songName.toLowerCase() + 'Title'));
@@ -993,26 +938,20 @@ class FreeplayState extends MusicBeatState
 				
 				icon.visible = false;
 				if (ex) {
-					if (songs[i].songName.toLowerCase() != 'gameover' || songs[i].songName.toLowerCase() == 'gameover' && FlxG.save.data.playedGO) { 
-						if (FileSystem.exists(Paths.instEXcheck(songs[i].songName.toLowerCase()))) {
-							grpSongs.add(songText);
-							realLength++;
-							iconArray.push(icon);
-						}
-					}
-				} else {
-					if (songs[i].songName.toLowerCase() != 'gameover') {
+					if (OpenFlAssets.exists(Paths.instEXcheck(songs[i].songName.toLowerCase()))) {
 						grpSongs.add(songText);
 						realLength++;
 						iconArray.push(icon);
 					}
+				} else {
+					grpSongs.add(songText);
+					realLength++;
+					iconArray.push(icon);
 				}
 				
-				if (FileSystem.exists(Paths.instEXcheck(songs[i].songName.toLowerCase())) && presetPos) {
-					if (songs[i].songName.toLowerCase() != 'gameover') {
-						songText.x = oldPositions[i].x;
-						songText.y = oldPositions[i].y;
-					}
+				if (OpenFlAssets.exists(Paths.instEXcheck(songs[i].songName.toLowerCase())) && presetPos) {
+					songText.x = oldPositions[i].x;
+					songText.y = oldPositions[i].y;
 				} else {
 					var offsetX:Int = 0;
 					var offsetY:Int = 0;
@@ -1037,9 +976,6 @@ class FreeplayState extends MusicBeatState
 								songText.x -= 5;
 							else if (Math.abs(i) == 2) 
 								songText.x -= 8; 
-						case 'oblique fracture':
-							if (Math.abs(i) == 0) 
-								songText.x -= 45;
 					}
 					songText.y = (i * 160) + offsetY + 318;
 				}

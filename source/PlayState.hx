@@ -64,10 +64,6 @@ import openfl.filters.ShaderFilter;
 #if windows
 import Discord.DiscordClient;
 #end
-#if windows
-import Sys;
-import sys.FileSystem;
-#end
 	
 #if mobileC
 import ui.Mobilecontrols;
@@ -376,9 +372,6 @@ class PlayState extends MusicBeatState
 				case 'philly-nice': songLowercase = 'philly';
 			}
 		
-		#if windows
-		executeModchart = FileSystem.exists(Paths.lua(songLowercase  + "/modchart"));
-		#end
 		#if !cpp
 		executeModchart = false; // FORCE disable for non cpp targets
 		#end
@@ -2318,14 +2311,7 @@ class PlayState extends MusicBeatState
 		if(FlxG.save.data.botplay) scoreTxt.x = FlxG.width / 2 - 20;													  
 		add(scoreTxt);
 					
-		creditTxt = new FlxText(876, 648, 348);
-        creditTxt.text = 'PORTED BY\nSKEEBY';
-        creditTxt.setFormat(Paths.font("vcr.ttf"), 30, FlxColor.WHITE, RIGHT);
-        creditTxt.setBorderStyle(OUTLINE, FlxColor.BLACK, 3, 1);       
-        creditTxt.scrollFactor.set();
-        add(creditTxt);
-
-		replayTxt = new FlxText(healthBarBG.x + healthBarBG.width / 2 - 75, healthBarBG.y + (FlxG.save.data.downscroll ? 100 : -100), 0, "REPLAY", 20);
+	        replayTxt = new FlxText(healthBarBG.x + healthBarBG.width / 2 - 75, healthBarBG.y + (FlxG.save.data.downscroll ? 100 : -100), 0, "REPLAY", 20);
 		replayTxt.setFormat(Paths.font("vcr.ttf"), 42, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE,FlxColor.BLACK);
 		replayTxt.scrollFactor.set();
 		if (loadRep)
@@ -3004,26 +2990,6 @@ class PlayState extends MusicBeatState
 				case 'philly-nice': songLowercase = 'philly';
 			}
 		// Per song offset check
-		#if windows
-			var songPath = 'assets/data/' + songLowercase + '/';
-			
-			/*for(file in sys.FileSystem.readDirectory(songPath))
-			{
-				var path = haxe.io.Path.join([songPath, file]);
-				if(!sys.FileSystem.isDirectory(path))
-				{
-					if(path.endsWith('.offset'))
-					{
-						trace('Found offset file: ' + path);
-						songOffset = Std.parseFloat(file.substring(0, file.indexOf('.off')));
-						break;
-					}else {
-						trace('Offset file not found. Creating one @: ' + songPath);
-						sys.io.File.saveContent(songPath + songOffset + '.offset', '');
-					}
-				}
-			}*/
-		#end
 		if (hasDad2 && usesDad2Chart) {
 			var dad2NoteData = dad2SONG.notes;
 			dad2Notes = new FlxTypedGroup<Note>();

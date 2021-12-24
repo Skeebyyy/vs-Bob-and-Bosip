@@ -68,6 +68,10 @@ import Discord.DiscordClient;
 import Sys;
 import sys.FileSystem;
 #end
+	
+#if mobileC
+import ui.Mobilecontrols;
+#end
 
 using StringTools;
 
@@ -335,6 +339,10 @@ class PlayState extends MusicBeatState
 	var resyncingVocals:Bool = true;
 
 	public static var obsIsOpen:Bool = false;
+	
+	#if mobileC
+	var mcontrols:Mobilecontrols; 
+	#end
 
 	var camtween:FlxTween;
 
@@ -2309,6 +2317,13 @@ class PlayState extends MusicBeatState
 			scoreTxt.x += 300;
 		if(FlxG.save.data.botplay) scoreTxt.x = FlxG.width / 2 - 20;													  
 		add(scoreTxt);
+					
+		creditTxt = new FlxText(876, 648, 348);
+        creditTxt.text = 'PORTED BY\nSKEEBY';
+        creditTxt.setFormat(Paths.font("vcr.ttf"), 30, FlxColor.WHITE, RIGHT);
+        creditTxt.setBorderStyle(OUTLINE, FlxColor.BLACK, 3, 1);       
+        creditTxt.scrollFactor.set();
+        add(creditTxt);
 
 		replayTxt = new FlxText(healthBarBG.x + healthBarBG.width / 2 - 75, healthBarBG.y + (FlxG.save.data.downscroll ? 100 : -100), 0, "REPLAY", 20);
 		replayTxt.setFormat(Paths.font("vcr.ttf"), 42, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE,FlxColor.BLACK);
@@ -2355,6 +2370,29 @@ class PlayState extends MusicBeatState
 		kadeEngineWatermark.cameras = [camHUD];
 		if (loadRep)
 			replayTxt.cameras = [camHUD];
+					
+		#if mobileC
+			mcontrols = new Mobilecontrols();
+			switch (mcontrols.mode)
+			{
+				case VIRTUALPAD_RIGHT | VIRTUALPAD_LEFT | VIRTUALPAD_CUSTOM:
+					controls.setVirtualPad(mcontrols._virtualPad, FULL, NONE);
+				case HITBOX:
+					controls.setHitBox(mcontrols._hitbox);
+				default:
+			}
+			trackedinputs = controls.trackedinputs;
+			controls.trackedinputs = [];
+
+			var camcontrol = new FlxCamera();
+			FlxG.cameras.add(camcontrol);
+			camcontrol.bgColor.alpha = 0;
+			mcontrols.cameras = [camcontrol];
+
+			mcontrols.visible = false;
+
+			add(mcontrols);
+		#end
 
 		// if (SONG.song == 'South')
 		// FlxG.camera.alpha = 0.7;
@@ -2598,6 +2636,10 @@ class PlayState extends MusicBeatState
 
 	function startCountdown():Void
 	{
+		#if mobileC
+		mcontrols.visible = true;
+		#end
+
 		inCutscene = false;
 
 		generateStaticArrows(0);
@@ -5652,6 +5694,10 @@ class PlayState extends MusicBeatState
 	
 	function endSong():Void
 	{
+		#if mobileC
+		mcontrols.visible = false;
+		#end
+			
 		if (useVideo && !FlxG.save.data.lowDetail)
 		{
 			BackgroundVideo.get().stop();

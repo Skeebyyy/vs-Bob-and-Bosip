@@ -54,6 +54,7 @@ class VideoState2 extends MusicBeatState
 			WebmPlayer.SKIP_STEP_LIMIT = frameSkipLimit;
 		}
 		#end
+	}
 	
 	override function create()
 	{

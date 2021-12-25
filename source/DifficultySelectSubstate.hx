@@ -18,11 +18,6 @@ import openfl.geom.Point;
 import LoadingState.LoadingsState;
 import flixel.addons.transition.FlxTransitionableState;
 
-#if windows
-import Sys;
-import sys.FileSystem;
-#end
-
 import openfl.Lib;
 
 class DifficultySelectSubstate extends MusicBeatSubstate
@@ -60,15 +55,6 @@ class DifficultySelectSubstate extends MusicBeatSubstate
 		bg = new FlxSprite().makeGraphic(1280, 720, FlxColor.BLACK);
 		bg.alpha = 0.2;
 		add(bg);
-
-		
-		if (FileSystem.exists(Paths.instcheck(song))) 
-			hasRegular = true;
-
-		
-		
-		if (FileSystem.exists(Paths.instEXcheck(song))) 
-			hasEX = true;
 
 		trace(hasRegular);
 		trace(hasEX);

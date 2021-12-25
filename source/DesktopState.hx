@@ -798,12 +798,7 @@ class DesktopState extends MusicBeatState
 			
 		}
 
-			
-		
-
-												
-
-		for (i in 0...songs.length) {
+                for (i in 0...songs.length) {
 			if (songs[i].toLowerCase() != 'gameover' || songs[i].toLowerCase() == 'gameover' && FlxG.save.data.playedGO) {
 				var mod:String = '';
 				if (freeplayName == 'freeplay EX') 

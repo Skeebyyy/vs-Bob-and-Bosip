@@ -48,12 +48,7 @@ class VideoState2 extends MusicBeatState
 		
 		leSource = source;
 		transFunction = toTrans;
-		if (frameSkipLimit != -1 && GlobalVideo.isWebm)
-		{
-			//GlobalVideo.getWebm().webm.SKIP_STEP_LIMIT = frameSkipLimit;	
-			WebmPlayer.SKIP_STEP_LIMIT = frameSkipLimit;
-                        #end
-	}
+		if (frameSkipLimit != -1 && GlobalVideo.isWebm
 	
 	override function create()
 	{

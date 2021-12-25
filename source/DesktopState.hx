@@ -286,8 +286,7 @@ class DesktopState extends MusicBeatState
 						achievementsUnlocked.set('takeover-normal', false);
 				}
 			}
-			
-		}
+		
 		if (goldFolderCheck) {
 			FlxG.save.data.sol = true;
 		}

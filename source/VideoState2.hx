@@ -53,6 +53,7 @@ class VideoState2 extends MusicBeatState
 			//GlobalVideo.getWebm().webm.SKIP_STEP_LIMIT = frameSkipLimit;	
 			WebmPlayer.SKIP_STEP_LIMIT = frameSkipLimit;
 		}
+		#end
 	}
 	
 	override function create()

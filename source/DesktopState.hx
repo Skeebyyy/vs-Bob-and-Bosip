@@ -777,6 +777,7 @@ class DesktopState extends MusicBeatState
 						theTextSprite.y += 25;
 						notepadTextArray.push(theTextSprite);
 						notepad.add(theTextSprite);
+					}
 					statsScrollMax += 23 * 30;
 					trace(statsScrollMax);
 				case 2:
@@ -793,6 +794,14 @@ class DesktopState extends MusicBeatState
 					notespr.x += 306;
 					notespr.y += 25;
 					notepad.add(notespr);
+			}
+			
+		}
+
+			
+		
+
+												
 
 		for (i in 0...songs.length) {
 			if (songs[i].toLowerCase() != 'gameover' || songs[i].toLowerCase() == 'gameover' && FlxG.save.data.playedGO) {

@@ -1073,7 +1073,6 @@ class PlayState extends MusicBeatState
 					{
 						defaultCamZoom = 0.75;
 						curStage = 'sunsuck';
-						if (FileSystem.exists(Paths.txt("ronald mcdonald slide/preload" + suf)))
 							{
 								var characters:Array<String> = CoolUtil.preloadfile(Paths.txt("ronald mcdonald slide/preload" + suf));
 								trace('Load Assets');
@@ -1668,7 +1667,6 @@ class PlayState extends MusicBeatState
 			default:
 				gfVersion = 'gf';
 		}
-		if (FileSystem.exists(Paths.txt(SONG.song.toLowerCase() + "/preload" + suf)))
 			{
 				var characters:Array<String> = CoolUtil.preloadfile(Paths.txt(SONG.song.toLowerCase() + "/preload" + suf));
 				trace('Load Assets');
